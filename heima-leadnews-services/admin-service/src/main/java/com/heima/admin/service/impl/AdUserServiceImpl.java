@@ -24,6 +24,7 @@ import java.util.Map;
 public class AdUserServiceImpl extends ServiceImpl<AdUserMapper, AdUser> implements AdUserService {
     /**
      * admin 登录
+     *
      * @param dto
      * @return
      */
@@ -31,17 +32,17 @@ public class AdUserServiceImpl extends ServiceImpl<AdUserMapper, AdUser> impleme
     public ResponseResult login(AdUserDTO dto) {
         //1 参数校验
         if (StringUtils.isBlank(dto.getName()) || StringUtils.isBlank(dto.getPassword())) {
-            CustException.cust(AppHttpCodeEnum.PARAM_INVALID,"参数错误");
+            CustException.cust(AppHttpCodeEnum.PARAM_INVALID, "参数错误");
         }
         //2 根据用户名查询用户信息
         AdUser adUser = getOne(Wrappers.<AdUser>lambdaQuery()
-                .eq(AdUser::getName, dto.getName() )
-            );
+                .eq(AdUser::getName, dto.getName())
+        );
         if (adUser == null) {
-            CustException.cust(AppHttpCodeEnum.DATA_NOT_EXIST,"用户名或密码错误");
+            CustException.cust(AppHttpCodeEnum.DATA_NOT_EXIST, "用户名或密码错误");
         }
-       if(9 != adUser.getStatus().intValue()){
-            CustException.cust(AppHttpCodeEnum.LOGIN_STATUS_ERROR,"用户状态异常，请联系管理员");
+        if (9 != adUser.getStatus().intValue()) {
+            CustException.cust(AppHttpCodeEnum.LOGIN_STATUS_ERROR, "用户状态异常，请联系管理员");
         }
         //3 获取数据库密码和盐， 匹配密码
         String dbPwd = adUser.getPassword(); // 数据库密码（加密）
@@ -49,7 +50,7 @@ public class AdUserServiceImpl extends ServiceImpl<AdUserMapper, AdUser> impleme
         // 用户输入密码（加密后）
         String newPwd = DigestUtils.md5DigestAsHex((dto.getPassword() + salt).getBytes());
         if (!dbPwd.equals(newPwd)) {
-            CustException.cust(AppHttpCodeEnum.LOGIN_PASSWORD_ERROR,"用户名或密码错误");
+            CustException.cust(AppHttpCodeEnum.LOGIN_PASSWORD_ERROR, "用户名或密码错误");
         }
         //4 修改登录时间
         adUser.setLoginTime(new Date());

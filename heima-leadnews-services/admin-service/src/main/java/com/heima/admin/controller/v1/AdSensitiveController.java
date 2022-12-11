@@ -1,4 +1,5 @@
 package com.heima.admin.controller.v1;
+
 import com.heima.admin.service.AdSensitiveService;
 import com.heima.model.admin.dtos.SensitiveDTO;
 import com.heima.model.admin.pojos.AdSensitive;
@@ -7,10 +8,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-@Api(value = "敏感词管理API",tags = "敏感词管理API")
+
+@Api(value = "敏感词管理API", tags = "敏感词管理API")
 @RestController
 @RequestMapping("/api/v1/sensitive")
-public class AdSensitiveController{
+public class AdSensitiveController {
     @Autowired
     AdSensitiveService sensitiveService;
 

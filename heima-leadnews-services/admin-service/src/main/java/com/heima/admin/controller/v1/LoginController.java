@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(value = "运营平台登录API",tags = "运营平台登录API")
+@Api(value = "运营平台登录API", tags = "运营平台登录API")
 @RestController
 @RequestMapping("/login")
-public class LoginController{
+public class LoginController {
     @Autowired
     AdUserService userService;
+
     @ApiOperation("登录")
     @PostMapping("/in")
     public ResponseResult login(@RequestBody AdUserDTO DTO) {

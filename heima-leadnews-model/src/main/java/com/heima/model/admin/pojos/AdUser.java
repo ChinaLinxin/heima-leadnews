@@ -1,24 +1,28 @@
 package com.heima.model.admin.pojos;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
 import java.util.Date;
+
 /**
  * <p>
  * 管理员用户信息表
  * </p>
+ *
  * @author itheima
  */
 @Data
 @TableName("ad_user")
-public class AdUser{
+public class AdUser {
     private static final long serialVersionUID = 1L;
     /**
      * 主键
      */
-    @TableId(value = "id",type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
      * 登录用户名
@@ -55,9 +59,9 @@ public class AdUser{
     private String phone;
     /**
      * 状态
-            0 暂时不可用
-            1 永久不可用
-            9 正常可用
+     * 0 暂时不可用
+     * 1 永久不可用
+     * 9 正常可用
      */
     @TableField("status")
     private Integer status;
