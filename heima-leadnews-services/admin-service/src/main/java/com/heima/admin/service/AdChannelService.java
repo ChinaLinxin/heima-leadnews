@@ -10,4 +10,22 @@ public interface AdChannelService extends IService<AdChannel> {
      * @return
      */
     public ResponseResult findByNameAndPage(ChannelDTO dto);
+    /**
+     * 新增
+     * @param channel
+     * @return
+     */
+    public ResponseResult insert(AdChannel channel);
+    /**
+     * 修改
+     * @param adChannel
+     * @return
+     */
+    public ResponseResult update(AdChannel adChannel);
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    public ResponseResult deleteById(Integer id);
 }
