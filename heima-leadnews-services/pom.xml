@@ -15,6 +15,16 @@
         <module>admin-service</module>
     </modules>
     <dependencies>
+        <!-- nacos 注册中心  客户端依赖 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!-- nacos 配置中心  客户端依赖 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
         <!-- 统一异常处理依赖 引入后就不用在try catch异常啦 ~~ -->
         <dependency>
             <groupId>com.heima</groupId>
