@@ -1,12 +1,15 @@
 package com.heima.utils.common;
+
 import java.util.Base64;
+
 public class Base64Utils {
     /**
      * 解码
+     *
      * @param base64
      * @return
      */
-    public static byte[] decode(String base64){
+    public static byte[] decode(String base64) {
         Base64.Decoder decoder = Base64.getDecoder();
         try {
             byte[] b = decoder.decode(base64);
@@ -21,8 +24,10 @@ public class Base64Utils {
             return null;
         }
     }
+
     /**
      * 编码
+     *
      * @param data
      * @return
      * @throws Exception

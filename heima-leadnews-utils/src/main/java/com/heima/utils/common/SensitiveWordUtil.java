@@ -10,13 +10,14 @@ public class SensitiveWordUtil {
 
     /**
      * 生成关键词字典库
+     *
      * @param words
      * @return
      */
     public static void initMap(Collection<String> words) {
         if (words == null) {
             System.out.println("敏感词列表不能为空");
-            return ;
+            return;
         }
 
         // map初始长度words.size()，整个字典库的入口字数(小于words.size()，因为不同的词可能会有相同的首字)
@@ -29,7 +30,7 @@ public class SensitiveWordUtil {
             String word = iterator.next();
             curMap = map;
             int len = word.length();
-            for (int i =0; i < len; i++) {
+            for (int i = 0; i < len; i++) {
                 // 遍历每个词的字
                 String key = String.valueOf(word.charAt(i));
                 // 当前字在当前层是否存在, 不存在则新建, 当前层数据指向下一个节点, 继续判断是否存在数据
@@ -42,7 +43,7 @@ public class SensitiveWordUtil {
                 }
                 curMap = wordMap;
                 // 如果当前字是词的最后一个字，则将isEnd标志置1
-                if (i == len -1) {
+                if (i == len - 1) {
                     curMap.put("isEnd", "1");
                 }
             }
@@ -53,6 +54,7 @@ public class SensitiveWordUtil {
 
     /**
      * 搜索文本中某个文字是否匹配关键词
+     *
      * @param text
      * @param beginIndex
      * @return
@@ -73,7 +75,7 @@ public class SensitiveWordUtil {
             if (curMap == null) {
                 break;
             } else {
-                wordLength ++;
+                wordLength++;
                 if ("1".equals(curMap.get("isEnd"))) {
                     isEnd = true;
                 }
@@ -87,6 +89,7 @@ public class SensitiveWordUtil {
 
     /**
      * 获取匹配的关键词和命中次数
+     *
      * @param text
      * @return
      */
@@ -118,7 +121,7 @@ public class SensitiveWordUtil {
         list.add("不懂爱");
         initMap(list); // 将敏感词列表封装成DFA结构
 
-        String content="我是一个好人，并不会卖冰毒，也不操练法轮功,我真的不卖冰毒";
+        String content = "我是一个好人，并不会卖冰毒，也不操练法轮功,我真的不卖冰毒";
         Map<String, Integer> map = matchWords(content); // 检查敏感词
         System.out.println(map);
     }

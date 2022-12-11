@@ -12,18 +12,18 @@ public class IdsUtils {
     private static final String KEY_AES = "AES";
     private static final String KEY_SECART = "12345678901234561234567890123456";
 
-    public static String encryptNumber(Long number) throws Exception{
-        String src = String.format("%d%013d",0,number);
+    public static String encryptNumber(Long number) throws Exception {
+        String src = String.format("%d%013d", 0, number);
         return encrypt(src);
     }
 
-    public static Long decryptLong(String src) throws Exception{
-        String val =decrypt(src);
+    public static Long decryptLong(String src) throws Exception {
+        String val = decrypt(src);
         return Long.valueOf(val);
     }
 
-    public static Integer decryptInt(String src) throws Exception{
-        String val =decrypt(src);
+    public static Integer decryptInt(String src) throws Exception {
+        String val = decrypt(src);
         return Integer.valueOf(val);
     }
 
@@ -77,8 +77,8 @@ public class IdsUtils {
         return hs.toUpperCase();
     }
 
-    public static void main(String[] args) throws Exception{
-        System.out.println("========:"+encryptNumber(2l));
+    public static void main(String[] args) throws Exception {
+        System.out.println("========:" + encryptNumber(2l));
     }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -90,11 +90,11 @@
                 <groupId>com.heima</groupId>
                 <version>${project.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.reflections</groupId>-->
-<!--                <artifactId>reflections</artifactId>-->
-<!--                <version>${reflections.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.reflections</groupId>-->
+            <!--                <artifactId>reflections</artifactId>-->
+            <!--                <version>${reflections.version}</version>-->
+            <!--            </dependency>-->
             <!--Apache 工具包包-->
             <dependency>
                 <groupId>commons-io</groupId>
@@ -128,11 +128,11 @@
                 <artifactId>mybatis-spring</artifactId>
                 <version>${mybatis.spring.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>com.github.pagehelper</groupId>-->
-<!--                <artifactId>pagehelper-spring-boot-starter</artifactId>-->
-<!--                <version>${pagehelper.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.github.pagehelper</groupId>-->
+            <!--                <artifactId>pagehelper-spring-boot-starter</artifactId>-->
+            <!--                <version>${pagehelper.version}</version>-->
+            <!--            </dependency>-->
             <!-- jsoup -->
             <dependency>
                 <groupId>org.jsoup</groupId>
@@ -173,16 +173,16 @@
                 <scope>import</scope>
             </dependency>
             <!-- curator ZK 客户端 -->
-<!--            <dependency>-->
-<!--                <groupId>org.apache.curator</groupId>-->
-<!--                <artifactId>curator-framework</artifactId>-->
-<!--                <version>${curator.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.apache.curator</groupId>-->
-<!--                <artifactId>curator-recipes</artifactId>-->
-<!--                <version>${curator.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.apache.curator</groupId>-->
+            <!--                <artifactId>curator-framework</artifactId>-->
+            <!--                <version>${curator.version}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.apache.curator</groupId>-->
+            <!--                <artifactId>curator-recipes</artifactId>-->
+            <!--                <version>${curator.version}</version>-->
+            <!--            </dependency>-->
             <!--匹配度工具包-->
             <dependency>
                 <groupId>com.hankcs</groupId>

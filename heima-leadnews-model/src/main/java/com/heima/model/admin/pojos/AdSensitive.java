@@ -11,39 +11,25 @@ import java.util.Date;
 
 /**
  * <p>
- * 频道信息表
+ * 敏感词信息表
  * </p>
  *
  * @author itheima
  */
 @Data
-@TableName("ad_channel")
-public class AdChannel implements Serializable {
+@TableName("ad_sensitive")
+public class AdSensitive implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * 主键
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
-     * 频道名称
+     * 敏感词
      */
-    @TableField("name")
-    private String name;
-    /**
-     * 频道描述
-     */
-    @TableField("description")
-    private String description;
-    /**
-     * 是否默认频道
-     */
-    @TableField("is_default")
-    private Boolean isDefault;
-    @TableField("status")
-    private Boolean status;
-    /**
-     * 默认排序
-     */
-    @TableField("ord")
-    private Integer ord;
+    @TableField("sensitives")
+    private String sensitives;
     /**
      * 创建时间
      */

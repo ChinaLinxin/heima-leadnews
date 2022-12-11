@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * @Description:  目的是给用户提供友好的提示信息
+ * @Description: 目的是给用户提供友好的提示信息
  * @Version: V1.0
  */
 @Slf4j
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionCatch {
     /**
      * 解决项目中所有的异常拦截
+     *
      * @return
      */
     @ExceptionHandler(Exception.class)  // exception 所有子类
@@ -26,8 +27,10 @@ public class ExceptionCatch {
         log.error("ExceptionCatch ex:{}", ex);
         return ResponseResult.errorResult(AppHttpCodeEnum.SERVER_ERROR, "您的网络异常，请稍后重试");
     }
+
     /**
      * 拦截自定义异常
+     *
      * @return
      */
     @ExceptionHandler(CustomException.class)

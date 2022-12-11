@@ -15,6 +15,7 @@ import java.util.Map;
 public class SimHashUtils {
     /**
      * 清除html标签
+     *
      * @param content
      * @return
      */
@@ -32,9 +33,10 @@ public class SimHashUtils {
 
     /**
      * 这个是对整个字符串进行hash计算
+     *
      * @return
      */
-    private static BigInteger simHash(String token,int hashbits) {
+    private static BigInteger simHash(String token, int hashbits) {
 
         token = cleanResume(token); // cleanResume 删除一些特殊字符
 
@@ -71,7 +73,7 @@ public class SimHashUtils {
             }
 
             // 2、将每一个分词hash为一组固定长度的数列.比如 64bit 的一个整数.
-            BigInteger t = hash(word,hashbits);
+            BigInteger t = hash(word, hashbits);
             for (int i = 0; i < hashbits; i++) {
                 BigInteger bitmask = new BigInteger("1").shiftLeft(i);
                 // 3、建立一个长度为64的整数数组(假设要生成64位的数字指纹,也可以是其它数字),
@@ -101,10 +103,11 @@ public class SimHashUtils {
 
     /**
      * 对单个的分词进行hash计算;
+     *
      * @param source
      * @return
      */
-    private static BigInteger hash(String source,int hashbits) {
+    private static BigInteger hash(String source, int hashbits) {
         if (source == null || source.length() == 0) {
             return new BigInteger("0");
         } else {
@@ -132,13 +135,14 @@ public class SimHashUtils {
 
     /**
      * 计算海明距离,海明距离越小说明越相似;
+     *
      * @param other
      * @return
      */
-    private static int hammingDistance(String token1,String token2,int hashbits) {
+    private static int hammingDistance(String token1, String token2, int hashbits) {
         BigInteger m = new BigInteger("3").shiftLeft(hashbits).subtract(
                 new BigInteger("3"));
-        BigInteger x = simHash(token1,hashbits).xor(simHash(token2,hashbits)).and(m);
+        BigInteger x = simHash(token1, hashbits).xor(simHash(token2, hashbits)).and(m);
         int tot = 0;
         while (x.signum() != 0) {
             tot += 1;
@@ -148,9 +152,9 @@ public class SimHashUtils {
     }
 
 
-    public static double getSemblance(String token1,String token2){
-        double i = (double) hammingDistance(token1,token2, 64);
-        return 1 - i/64 ;
+    public static double getSemblance(String token1, String token2) {
+        double i = (double) hammingDistance(token1, token2, 64);
+        return 1 - i / 64;
     }
 
     public static void main(String[] args) {

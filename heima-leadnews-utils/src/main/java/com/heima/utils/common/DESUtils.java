@@ -12,6 +12,7 @@ public class DESUtils {
 
     /**
      * 加密
+     *
      * @param content
      * @param keyBytes
      * @return
@@ -19,7 +20,7 @@ public class DESUtils {
     private static byte[] encrypt(byte[] content, byte[] keyBytes) {
         try {
             DESKeySpec keySpec = new DESKeySpec(keyBytes);
-            String algorithm =  "DES";//指定使什么样的算法
+            String algorithm = "DES";//指定使什么样的算法
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm);
             SecretKey key = keyFactory.generateSecret(keySpec);
             String transformation = "DES/CBC/PKCS5Padding"; //用什么样的转型方式
@@ -35,6 +36,7 @@ public class DESUtils {
 
     /**
      * 解密
+     *
      * @param content
      * @param keyBytes
      * @return
@@ -43,10 +45,10 @@ public class DESUtils {
         try {
             DESKeySpec keySpec = new DESKeySpec(keyBytes);
             String algorithm = "DES";
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm );
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm);
             SecretKey key = keyFactory.generateSecret(keySpec);
             String transformation = "DES/CBC/PKCS5Padding";
-            Cipher cipher = Cipher.getInstance(transformation );
+            Cipher cipher = Cipher.getInstance(transformation);
             cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(keyBytes));
             byte[] result = cipher.doFinal(content);
             return result;
@@ -60,13 +62,14 @@ public class DESUtils {
 
     /**
      * 二进制转16进制
+     *
      * @param bytes
      * @return
      */
     private static String byteToHexString(byte[] bytes) {
         StringBuffer sb = new StringBuffer();
         String sTemp;
-        for (int i = 0; i<bytes.length; i++) {
+        for (int i = 0; i < bytes.length; i++) {
             sTemp = Integer.toHexString(0xFF & bytes[i]);
             if (sTemp.length() < 2) {
                 sb.append(0);
@@ -78,24 +81,25 @@ public class DESUtils {
 
     /**
      * 16进制字符串转bytes
+     *
      * @param hex
      * @return
      */
     public static byte[] hexStringToByte(String hex) {
         int len = 0;
-        int num=0;
+        int num = 0;
         //判断字符串的长度是否是两位
-        if(hex.length()>=2){
+        if (hex.length() >= 2) {
             //判断字符喜欢是否是偶数
-            len=(hex.length() / 2);
+            len = (hex.length() / 2);
             num = (hex.length() % 2);
             if (num == 1) {
                 hex = "0" + hex;
-                len=len+1;
+                len = len + 1;
             }
-        }else{
+        } else {
             hex = "0" + hex;
-            len=1;
+            len = 1;
         }
         byte[] result = new byte[len];
         char[] achar = hex.toCharArray();
@@ -105,6 +109,7 @@ public class DESUtils {
         }
         return result;
     }
+
     private static int toByte(char c) {
         if (c >= 'a')
             return (c - 'a' + 10) & 0x0f;
@@ -124,33 +129,36 @@ public class DESUtils {
         }
         return arrOut;
     }
+
     /**
      * 加密
+     *
      * @param pass
      * @return
      */
-    public static String encode(String pass){
+    public static String encode(String pass) {
         return byteToHexString(encrypt(pass.getBytes(), key.getBytes()));
     }
 
     /**
      * 解密
+     *
      * @param passcode
      * @return
      */
-    public static String decode(String passcode){
+    public static String decode(String passcode) {
         return byteToHexString(decrypt(hexToByteArr(passcode), key.getBytes()));
     }
 
     public static void main(String[] args) {
         String content = "password111111111111111";
 
-        System.out.println("加密前 "+ byteToHexString(content.getBytes()));
+        System.out.println("加密前 " + byteToHexString(content.getBytes()));
         byte[] encrypted = encrypt(content.getBytes(), key.getBytes());
-        System.out.println("加密后："+ byteToHexString(encrypted));
+        System.out.println("加密后：" + byteToHexString(encrypted));
 
-        byte[] decrypted=decrypt(encrypted, key.getBytes());
-        System.out.println("解密后："+ byteToHexString(decrypted));
+        byte[] decrypted = decrypt(encrypted, key.getBytes());
+        System.out.println("解密后：" + byteToHexString(decrypted));
 
 
         System.out.println(encode(content));

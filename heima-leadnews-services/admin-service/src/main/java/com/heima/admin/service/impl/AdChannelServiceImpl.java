@@ -1,4 +1,5 @@
 package com.heima.admin.service.impl;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -18,7 +19,7 @@ import java.util.Date;
 
 @Service
 public class AdChannelServiceImpl extends ServiceImpl<AdChannelMapper, AdChannel> implements AdChannelService {
-      @Override
+    @Override
     public ResponseResult findByNameAndPage(ChannelDTO dto) {
         // 1. 校验参数
         if (dto == null) {
@@ -49,6 +50,7 @@ public class AdChannelServiceImpl extends ServiceImpl<AdChannelMapper, AdChannel
 
     /**
      * 新增
+     *
      * @param adChannel
      * @return
      */
@@ -62,8 +64,8 @@ public class AdChannelServiceImpl extends ServiceImpl<AdChannelMapper, AdChannel
 
         int count = this.count(Wrappers.<AdChannel>lambdaQuery()
                 .eq(AdChannel::getName, adChannel.getName()));
-        if(count > 0){
-            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST,"该频道已存在");
+        if (count > 0) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST, "该频道已存在");
         }
         // 3 执行新增
         adChannel.setCreatedTime(new Date());
@@ -74,6 +76,7 @@ public class AdChannelServiceImpl extends ServiceImpl<AdChannelMapper, AdChannel
 
     /**
      * 修改频道及频道状态
+     *
      * @param adChannel
      * @return
      */
@@ -86,16 +89,16 @@ public class AdChannelServiceImpl extends ServiceImpl<AdChannelMapper, AdChannel
         //2 执行修改
         AdChannel channel = getById(adChannel.getId());
         if (channel == null) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST,"频道信息不存在");
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST, "频道信息不存在");
         }
         //3. 校验名称唯一性
-        if(StringUtils.isNotBlank(adChannel.getName())
+        if (StringUtils.isNotBlank(adChannel.getName())
                 &&
-                !adChannel.getName().equals(channel.getName())){
+                !adChannel.getName().equals(channel.getName())) {
             int count = this.count(Wrappers.<AdChannel>lambdaQuery()
                     .eq(AdChannel::getName, adChannel.getName()));
-            if(count > 0){
-                return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST,"该频道已存在");
+            if (count > 0) {
+                return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST, "该频道已存在");
             }
         }
         updateById(adChannel);
@@ -107,12 +110,12 @@ public class AdChannelServiceImpl extends ServiceImpl<AdChannelMapper, AdChannel
     public ResponseResult deleteById(Integer id) {
 
         //1.检查参数
-        if(id == null){
+        if (id == null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
         //2.判断当前频道是否存在 和 是否有效
         AdChannel adChannel = getById(id);
-        if(adChannel==null){
+        if (adChannel == null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
         }
         // 启用状态下不能删除

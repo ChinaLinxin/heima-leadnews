@@ -9,12 +9,13 @@ public class FileUtils {
 
     /**
      * 重资源流中读取第一行内容
+     *
      * @param in
      * @return
      * @throws IOException
      */
-    public static String readFristLineFormResource(InputStream in) throws IOException{
-        BufferedReader br=new BufferedReader(new InputStreamReader(in));
+    public static String readFristLineFormResource(InputStream in) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
         return br.readLine();
     }
 

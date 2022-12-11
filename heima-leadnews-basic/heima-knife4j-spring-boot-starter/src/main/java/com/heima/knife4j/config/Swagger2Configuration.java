@@ -21,7 +21,7 @@ public class Swagger2Configuration {
 
     @Bean(value = "defaultApi2")
     public Docket defaultApi2() {
-        Docket docket=new Docket(DocumentationType.SWAGGER_2)
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 //分组名称
                 .groupName("1.0")
@@ -32,6 +32,7 @@ public class Swagger2Configuration {
                 .build();
         return docket;
     }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("黑马头条API文档")

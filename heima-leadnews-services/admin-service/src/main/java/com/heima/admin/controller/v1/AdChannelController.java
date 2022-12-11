@@ -40,6 +40,7 @@ public class AdChannelController {
     public ResponseResult update(@RequestBody AdChannel adChannel) {
         return channelService.update(adChannel);
     }
+
     @ApiOperation("根据频道ID删除")
     @GetMapping("/del/{id}")
     public ResponseResult deleteById(@PathVariable("id") Integer id) {

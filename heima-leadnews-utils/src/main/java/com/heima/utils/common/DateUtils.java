@@ -6,12 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
-    public static String DATE_FORMAT = "yyyy-MM-dd";
-
-    public static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
     public static final String DATE_TIME_STAMP_FORMATE = "yyyyMMddHHmmss";
-
+    public static String DATE_FORMAT = "yyyy-MM-dd";
+    public static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     //2019年07月09日
     public static String DATE_FORMAT_CHINESE = "yyyy年M月d日";
     //2019年07月09日 14:00:32
@@ -20,6 +17,7 @@ public class DateUtils {
 
     /**
      * 获取当前日期
+     *
      * @return
      */
     public static String getCurrentDate() {
@@ -376,7 +374,7 @@ public class DateUtils {
     /**
      * 在输入日期上增加（+）或减去（-）天数
      *
-     * @param date   输入日期
+     * @param date 输入日期
      * @param iday 要增加或减少的天数
      */
     public static Date addDay(Date date, int iday) {
@@ -408,7 +406,7 @@ public class DateUtils {
     /**
      * 在输入日期上增加（+）或减去（-）年份
      *
-     * @param date   输入日期
+     * @param date  输入日期
      * @param iyear 要增加或减少的年数
      */
     public static Date addYear(Date date, int iyear) {
