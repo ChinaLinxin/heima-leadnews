@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>admin-service</module>
+        <module>user-service</module>
     </modules>
     <dependencies>
         <!-- nacos 注册中心  客户端依赖 -->
