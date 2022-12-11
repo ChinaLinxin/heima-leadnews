@@ -62,7 +62,10 @@ public class AdSensitiveServiceImpl extends ServiceImpl<AdSensitiveMapper, AdSen
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
         // 如果名称修改 ， 检查是否存在
-
+        int count = this.count(Wrappers.<AdSensitive>lambdaQuery().eq(AdSensitive::getSensitives, adSensitive.getSensitives()));
+        if (count > 0) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST, "敏感词已存在");
+        }
         //2.修改
         updateById(adSensitive);
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
