@@ -22,15 +22,17 @@ import com.heima.model.wemedia.pojos.WmUser;
 import com.heima.user.mapper.ApUserMapper;
 import com.heima.user.mapper.ApUserRealnameMapper;
 import com.heima.user.service.ApUserRealnameService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 @Service
 public class ApUserRealnameServiceImpl extends ServiceImpl<ApUserRealnameMapper, ApUserRealname> implements ApUserRealnameService {
-    @Autowired
+    @Resource
     ApUserMapper apUserMapper;
     @Autowired
     WemediaFeign wemediaFeign;
@@ -66,6 +68,7 @@ public class ApUserRealnameServiceImpl extends ServiceImpl<ApUserRealnameMapper,
                 resultPage.getTotal(), resultPage.getRecords());
     }
 
+    @GlobalTransactional(rollbackFor = Exception.class)
     @Override
     public ResponseResult updateStatusById(AuthDTO dto, Short status) {
         //1 参数检查
