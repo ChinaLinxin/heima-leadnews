@@ -1,4 +1,5 @@
 package com.heima.admin.gateway.config;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.config.GatewayProperties;
@@ -8,8 +9,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
+
 import java.util.ArrayList;
 import java.util.List;
+
 @Slf4j
 @Component
 @Primary
@@ -17,6 +20,7 @@ import java.util.List;
 public class SwaggerResourceConfig implements SwaggerResourcesProvider {
     private final RouteLocator routeLocator;
     private final GatewayProperties gatewayProperties;
+
     @Override
     public List<SwaggerResource> get() {
         List<SwaggerResource> resources = new ArrayList<>();
@@ -31,8 +35,9 @@ public class SwaggerResourceConfig implements SwaggerResourcesProvider {
         });
         return resources;
     }
+
     private SwaggerResource swaggerResource(String name, String location) {
-        log.info("name:{},location:{}",name,location);
+        log.info("name:{},location:{}", name, location);
         SwaggerResource swaggerResource = new SwaggerResource();
         swaggerResource.setName(name);
         swaggerResource.setLocation(location);

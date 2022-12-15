@@ -1,4 +1,5 @@
 package com.heima.knife4j.config;
+
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @Configuration
 @EnableSwagger2
 @EnableSwaggerBootstrapUI
@@ -20,11 +22,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Swagger2Configuration {
     @Value("${spring.application.name}")
     private String group;
+
     @Bean(value = "defaultApi2")
     @Order(value = 1)
     public Docket defaultApi2() {
 //        System.out.println(group);
-        Docket docket=new Docket(DocumentationType.SWAGGER_2)
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 //分组名称
                 .groupName(group)
@@ -35,6 +38,7 @@ public class Swagger2Configuration {
                 .build();
         return docket;
     }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("黑马头条API文档")

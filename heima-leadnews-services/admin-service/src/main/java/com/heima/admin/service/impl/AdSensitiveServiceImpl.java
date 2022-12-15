@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.admin.mapper.AdSensitiveMapper;
 import com.heima.admin.service.AdSensitiveService;
+import com.heima.common.exception.CustException;
 import com.heima.model.admin.dtos.SensitiveDTO;
 import com.heima.model.admin.pojos.AdSensitive;
 import com.heima.model.common.dtos.PageResponseResult;
@@ -24,6 +25,9 @@ public class AdSensitiveServiceImpl extends ServiceImpl<AdSensitiveMapper, AdSen
     @Override
     public ResponseResult list(SensitiveDTO dto) {
         //1.检查参数
+        if (dto == null) {
+            CustException.cust(AppHttpCodeEnum.PARAM_INVALID);
+        }
         dto.checkParam();
         //2.根据名称模糊分页查询
         IPage pageParam = new Page(dto.getPage(), dto.getSize());

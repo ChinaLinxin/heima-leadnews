@@ -120,7 +120,7 @@ public class AdChannelServiceImpl extends ServiceImpl<AdChannelMapper, AdChannel
         }
         // 启用状态下不能删除
         if (adChannel.getStatus()) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_ALLOW,"频道正在启用中 不能删除哦~");
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_ALLOW, "频道正在启用中 不能删除哦~");
         }
         //3.删除频道
         removeById(id);
