@@ -33,13 +33,11 @@ public class WmUserServiceImpl extends ServiceImpl<WmUserMapper, WmUser> impleme
         if (wmUser == null) {
             CustException.cust(AppHttpCodeEnum.DATA_NOT_EXIST);
         }
-
         // 3.比对密码
         String inputPwd = DigestUtils.md5DigestAsHex((dto.getPassword() + wmUser.getSalt()).getBytes());
         if (!inputPwd.equals(wmUser.getPassword())) {
             CustException.cust(AppHttpCodeEnum.LOGIN_PASSWORD_ERROR);
         }
-
         // 4.检查用户状态
         if (9 != wmUser.getStatus()) {
             CustException.cust(AppHttpCodeEnum.LOGIN_STATUS_ERROR);
@@ -47,7 +45,6 @@ public class WmUserServiceImpl extends ServiceImpl<WmUserMapper, WmUser> impleme
         // 修改最近一次登录时间
         wmUser.setLoginTime(new Date());
         this.updateById(wmUser);
-
         // 5.颁发token
         String token = AppJwtUtil.getToken(wmUser.getId().longValue());
         // 用户信息脱敏

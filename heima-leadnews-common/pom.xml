@@ -9,4 +9,10 @@
     <artifactId>heima-leadnews-common</artifactId>
     <packaging>jar</packaging>
     <name>heima-leadnews-common</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.heima</groupId>
+            <artifactId>heima-leadnews-model</artifactId>
+        </dependency>
+    </dependencies>
 </project>
