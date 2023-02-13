@@ -5,13 +5,13 @@ import java.io.Serializable;
 public class UploadCredentials implements Serializable {
 
     private String accessKeyId;
-    private String  accessKeySecret;
-    private String  securityToken;
-    private Long  expiredTime;
-    private String  ossEndpoint;
-    private String  ossInternalEndpoint;
-    private String  uploadBucket;
-    private String  uploadFolder;
+    private String accessKeySecret;
+    private String securityToken;
+    private Long expiredTime;
+    private String ossEndpoint;
+    private String ossInternalEndpoint;
+    private String uploadBucket;
+    private String uploadFolder;
 
     public UploadCredentials(String accessKeyId, String accessKeySecret, String securityToken, Long expiredTime, String ossEndpoint, String ossInternalEndpoint, String uploadBucket, String uploadFolder) {
         this.accessKeyId = accessKeyId;

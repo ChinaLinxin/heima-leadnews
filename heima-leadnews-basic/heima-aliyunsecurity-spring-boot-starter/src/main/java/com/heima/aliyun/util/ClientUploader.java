@@ -43,34 +43,35 @@ public class ClientUploader {
     }
 
 
-    public static ClientUploader getImageClientUploader(IClientProfile profile, boolean internal){
-        return  new ClientUploader(profile, "images", internal);
+    public static ClientUploader getImageClientUploader(IClientProfile profile, boolean internal) {
+        return new ClientUploader(profile, "images", internal);
     }
 
-    public static ClientUploader getVideoClientUploader(IClientProfile profile, boolean internal){
-        return  new ClientUploader(profile, "videos", internal);
+    public static ClientUploader getVideoClientUploader(IClientProfile profile, boolean internal) {
+        return new ClientUploader(profile, "videos", internal);
     }
 
-    public static ClientUploader getVoiceClientUploader(IClientProfile profile, boolean internal){
-        return  new ClientUploader(profile, "voices", internal);
+    public static ClientUploader getVoiceClientUploader(IClientProfile profile, boolean internal) {
+        return new ClientUploader(profile, "voices", internal);
     }
 
-    public static ClientUploader getFileClientUploader(IClientProfile profile, boolean internal){
-        return  new ClientUploader(profile, "files", internal);
+    public static ClientUploader getFileClientUploader(IClientProfile profile, boolean internal) {
+        return new ClientUploader(profile, "files", internal);
     }
 
     /**
      * 上传并获取上传后的图片链接
+     *
      * @param filePath
      * @return
      */
-    public String uploadFile(String filePath){
+    public String uploadFile(String filePath) {
         FileInputStream inputStream = null;
         OSSClient ossClient = null;
         try {
             File file = new File(filePath);
             UploadCredentials uploadCredentials = getCredentials();
-            if(uploadCredentials == null){
+            if (uploadCredentials == null) {
                 throw new RuntimeException("can not get upload credentials");
             }
             ObjectMetadata meta = new ObjectMetadata();
@@ -85,13 +86,13 @@ public class ClientUploader {
         } catch (Exception e) {
             throw new RuntimeException("upload file fail.", e);
         } finally {
-            if(ossClient != null){
+            if (ossClient != null) {
                 ossClient.shutdown();
             }
-            if(inputStream != null){
+            if (inputStream != null) {
                 try {
                     inputStream.close();
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -99,24 +100,25 @@ public class ClientUploader {
     }
 
 
-    private String getOssEndpoint(UploadCredentials uploadCredentials){
-        if(this.internal){
+    private String getOssEndpoint(UploadCredentials uploadCredentials) {
+        if (this.internal) {
             return uploadCredentials.getOssInternalEndpoint();
-        }else{
+        } else {
             return uploadCredentials.getOssEndpoint();
         }
     }
 
     /**
      * 上传并获取上传后的图片链接
+     *
      * @param bytes
      * @return
      */
-    public String uploadBytes(byte[] bytes){
+    public String uploadBytes(byte[] bytes) {
         OSSClient ossClient = null;
         try {
             UploadCredentials uploadCredentials = getCredentials();
-            if(uploadCredentials == null){
+            if (uploadCredentials == null) {
                 throw new RuntimeException("can not get upload credentials");
             }
 
@@ -128,22 +130,22 @@ public class ClientUploader {
         } catch (Exception e) {
             throw new RuntimeException("upload file fail.", e);
         } finally {
-            if(ossClient != null){
+            if (ossClient != null) {
                 ossClient.shutdown();
             }
         }
     }
 
 
-    public void addHeader(String key, String value){
+    public void addHeader(String key, String value) {
         this.headers.put(key, value);
     }
 
 
-    private UploadCredentials getCredentials() throws Exception{
-        if(this.uploadCredentials == null || this.uploadCredentials.getExpiredTime() < System.currentTimeMillis()){
-            synchronized(lock){
-                if(this.uploadCredentials == null || this.uploadCredentials.getExpiredTime() < System.currentTimeMillis()){
+    private UploadCredentials getCredentials() throws Exception {
+        if (this.uploadCredentials == null || this.uploadCredentials.getExpiredTime() < System.currentTimeMillis()) {
+            synchronized (lock) {
+                if (this.uploadCredentials == null || this.uploadCredentials.getExpiredTime() < System.currentTimeMillis()) {
                     this.uploadCredentials = getCredentialsFromServer();
                 }
             }
@@ -153,11 +155,12 @@ public class ClientUploader {
 
     /**
      * 从服务器端获取上传凭证
+     *
      * @return
      * @throws Exception
      */
-    private UploadCredentials getCredentialsFromServer() throws Exception{
-        UploadCredentialsRequest uploadCredentialsRequest =  new UploadCredentialsRequest();
+    private UploadCredentials getCredentialsFromServer() throws Exception {
+        UploadCredentialsRequest uploadCredentialsRequest = new UploadCredentialsRequest();
         uploadCredentialsRequest.setAcceptFormat(FormatType.JSON); // 指定api返回格式
         uploadCredentialsRequest.setMethod(com.aliyuncs.http.MethodType.POST); // 指定请求方法
         uploadCredentialsRequest.setEncoding("utf-8");
@@ -169,9 +172,9 @@ public class ClientUploader {
         uploadCredentialsRequest.setHttpContent(new JSONObject().toJSONString().getBytes("UTF-8"), "UTF-8", FormatType.JSON);
 
         IAcsClient client = null;
-        try{
+        try {
             client = new DefaultAcsClient(profile);
-            HttpResponse httpResponse =  client.doAction(uploadCredentialsRequest);
+            HttpResponse httpResponse = client.doAction(uploadCredentialsRequest);
             if (httpResponse.isSuccess()) {
                 JSONObject scrResponse = JSON.parseObject(new String(httpResponse.getHttpContent(), "UTF-8"));
                 if (200 == scrResponse.getInteger("code")) {
@@ -185,11 +188,10 @@ public class ClientUploader {
                 throw new RuntimeException("get upload credential from server fail. requestId:" + requestId + ", code:" + scrResponse.getInteger("code"));
             }
             throw new RuntimeException("get upload credential from server fail. http response status:" + httpResponse.getStatus());
-        }finally {
+        } finally {
             client.shutdown();
         }
     }
-
 
 
 }

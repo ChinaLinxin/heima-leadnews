@@ -3,7 +3,7 @@ package com.heima.user.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.heima.model.admin.pojos.ApUserRealname;
 import com.heima.model.common.dtos.ResponseResult;
-import com.heima.model.user.pojos.AuthDTO;
+import com.heima.model.user.dtos.AuthDTO;
 
 public interface ApUserRealnameService extends IService<ApUserRealname> {
     /**

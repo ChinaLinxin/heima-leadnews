@@ -7,22 +7,23 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+
 /**
  * InitializingBean: springbean生命周期接口  代表完成bean装配后 执行的初始化方法
  * 这个类的目的：
- *     设置rabbitmq消息序列化机制  （默认jdk效率差）
- *     设置rabbitmq消息发送确认 回调
- *     设置rabbitmq消息返还 回调
+ * 设置rabbitmq消息序列化机制  （默认jdk效率差）
+ * 设置rabbitmq消息发送确认 回调
+ * 设置rabbitmq消息返还 回调
  */
 @Component
 @Slf4j
 public class RabbitConfig implements InitializingBean {
     @Autowired
     RabbitTemplate rabbitTemplate;
+
     @Override
-    public void afterPropertiesSet()  {
+    public void afterPropertiesSet() {
         log.info("初始化rabbitMQ配置 ");
         // 设置消息转换器
         rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
@@ -35,10 +36,10 @@ public class RabbitConfig implements InitializingBean {
              */
             @Override
             public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-                if (!ack){
+                if (!ack) {
                     // TODO 可扩展自动重试
 
-                    log.error("发送消息到mq失败  ，原因: {}",cause);
+                    log.error("发送消息到mq失败  ，原因: {}", cause);
                 }
             }
         });
@@ -55,7 +56,7 @@ public class RabbitConfig implements InitializingBean {
             public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
                 // TODO 可扩展自动重试
 
-                log.error("消息返还回调触发  ，交换机: {} , 路由: {} , 消息内容: {} , 原因: {}  ",exchange,routingKey,message,replyText);
+                log.error("消息返还回调触发  ，交换机: {} , 路由: {} , 消息内容: {} , 原因: {}  ", exchange, routingKey, message, replyText);
             }
         });
     }

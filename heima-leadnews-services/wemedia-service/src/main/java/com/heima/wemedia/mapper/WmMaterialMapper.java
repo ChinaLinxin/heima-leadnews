@@ -12,7 +12,8 @@ import java.util.List;
 public interface WmMaterialMapper extends BaseMapper<WmMaterial> {
     /**
      * 根据素材资源路径，查询相关素材id
-     * @param urls 素材路径
+     *
+     * @param urls   素材路径
      * @param userId
      * @return
      */

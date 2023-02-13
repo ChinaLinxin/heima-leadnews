@@ -18,13 +18,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -34,6 +28,7 @@ import java.util.UUID;
 public class GreenTextScan {
     private String accessKeyId;
     private String secret;
+
     public Map greenTextScan(String content) throws Exception {
         IClientProfile profile = DefaultProfile
                 .getProfile("cn-shanghai", accessKeyId, secret);

@@ -31,6 +31,12 @@ public class AdChannelController {
         return channelService.findByNameAndPage(dto);
     }
 
+    @ApiOperation("根据id查询频道")
+    @GetMapping("/one/{id}")
+    public ResponseResult findOne(@PathVariable Integer id) {
+        return ResponseResult.okResult(channelService.getById(id));
+    }
+
     @ApiOperation("频道新增")
     @PostMapping("/save")
     public ResponseResult insert(@RequestBody AdChannel channel) {

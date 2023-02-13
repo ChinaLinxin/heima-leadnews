@@ -43,6 +43,7 @@ public interface AdSensitiveService extends IService<AdSensitive> {
 
     /**
      * 查询敏感词内容列表
+     *
      * @return
      */
     public ResponseResult<List<String>> selectAllSensitives();

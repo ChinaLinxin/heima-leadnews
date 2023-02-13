@@ -34,5 +34,9 @@
             <!--seata starter 采用1.4.2版本-->
             <version>${seata.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
 </project>

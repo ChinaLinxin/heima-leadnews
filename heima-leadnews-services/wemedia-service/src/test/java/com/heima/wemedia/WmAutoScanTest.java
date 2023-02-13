@@ -19,4 +19,11 @@ public class WmAutoScanTest {
 
         wmNewsAutoScanService.autoScanWmNews(6247);
     }
+
+    @Test
+    public void tests() {
+        String str = "hello world";
+        System.out.println(str.substring(3));
+
+    }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * @author Linxin
  */
-@Api(value = "素材管理API",tags = "素材管理API")
+@Api(value = "素材管理API", tags = "素材管理API")
 @RestController
 @RequestMapping("/api/v1/material")
 public class WmMaterialController {
@@ -43,6 +43,7 @@ public class WmMaterialController {
     public ResponseResult cancelCollectionMaterial(@PathVariable("id") Integer id) {
         return wmMaterialService.updateStatus(id, WemediaConstants.CANCEL_COLLECT_MATERIAL);
     }
+
     @ApiOperation("收藏素材")
     @GetMapping("/collect/{id}")
     public ResponseResult collectionMaterial(@PathVariable("id") Integer id) {

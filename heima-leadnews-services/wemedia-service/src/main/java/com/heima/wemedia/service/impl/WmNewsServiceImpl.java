@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.common.constants.message.NewsAutoScanConstants;
+import com.heima.common.constants.message.NewsUpOrDownConstants;
+import com.heima.common.constants.message.PublishArticleConstants;
 import com.heima.common.constants.wemedia.WemediaConstants;
 import com.heima.common.exception.CustException;
 import com.heima.model.common.dtos.PageResponseResult;
@@ -30,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,11 +49,18 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> implements WmNewsService {
 
-    @Value("${file.oss.web-site}")
-    private String webSite;
-
     @Resource
     RabbitTemplate rabbitTemplate;
+    @Resource
+    WmNewsMapper wmNewsMapper;
+    @Resource
+    WmUserMapper wmUserMapper;
+    @Value("${file.oss.web-site}")
+    private String webSite;
+    @Resource
+    private WmNewsMaterialMapper wmNewsMaterialMapper;
+    @Resource
+    private WmMaterialMapper wmMaterialMapper;
 
     @Override
     public ResponseResult findList(WmNewsPageReqDTO dto) {
@@ -128,8 +136,8 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         // 3.3 保存文章封面 和 素材的关联关系
         saveRelativeInfoForCover(urlList, wmNews, dto);
 
-        rabbitTemplate.convertAndSend(NewsAutoScanConstants.WM_NEWS_AUTO_SCAN_QUEUE,wmNews.getId());
-        log.info("成功发送 待审核消息 ==> 队列:{}, 文章id:{}",NewsAutoScanConstants.WM_NEWS_AUTO_SCAN_QUEUE,wmNews.getId());
+        rabbitTemplate.convertAndSend(NewsAutoScanConstants.WM_NEWS_AUTO_SCAN_QUEUE, wmNews.getId());
+        log.info("成功发送 待审核消息 ==> 队列:{}, 文章id:{}", NewsAutoScanConstants.WM_NEWS_AUTO_SCAN_QUEUE, wmNews.getId());
 
         return ResponseResult.okResult();
     }
@@ -194,14 +202,22 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         if (!WemediaConstants.WM_NEWS_PUBLISH_STATUS.equals(wmNews.getStatus())) {
             CustException.cust(AppHttpCodeEnum.DATA_NOT_ALLOW, "当前文章不是发布状态，不能上下架");
         }
-        update(Wrappers.<WmNews>lambdaUpdate().eq(WmNews::getId,dto.getId())
-                .set(WmNews::getEnable,dto.getEnable()));
+        update(Wrappers.<WmNews>lambdaUpdate().eq(WmNews::getId, dto.getId())
+                .set(WmNews::getEnable, dto.getEnable()));
 
-        return ResponseResult.okResult();
+        if (wmNews.getArticleId() != null) {
+            if (enable.equals(WemediaConstants.WM_NEWS_UP)) {
+                // 上架消息
+                rabbitTemplate.convertAndSend(NewsUpOrDownConstants.NEWS_UP_OR_DOWN_EXCHANGE,
+                        NewsUpOrDownConstants.NEWS_UP_ROUTE_KEY, wmNews.getArticleId());
+            } else {
+                // 下架消息
+                rabbitTemplate.convertAndSend(NewsUpOrDownConstants.NEWS_UP_OR_DOWN_EXCHANGE,
+                        NewsUpOrDownConstants.NEWS_DOWN_ROUTE_KEY, wmNews.getArticleId());
+            }
+        }
+        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
-
-    @Resource
-    private WmNewsMaterialMapper wmNewsMaterialMapper;
 
     private void saveWmNews(WmNews wmNews) {
         // 1.补全参数
@@ -242,9 +258,6 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
                 // 将素材收集到集合中
                 .collect(Collectors.toList());
     }
-
-    @Resource
-    private WmMaterialMapper wmMaterialMapper;
 
     /**
      * 保存关联关系的核心方法
@@ -317,10 +330,9 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         }
     }
 
-    @Resource
-    WmNewsMapper wmNewsMapper;
     /**
      * 查询文章列表
+     *
      * @param dto
      * @return
      */
@@ -331,9 +343,9 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         //记录当前页
         int currentPage = dto.getPage();
         //设置起始页
-        dto.setPage((dto.getPage()-1)*dto.getSize());
-        if(StringUtils.isNotBlank(dto.getTitle())){
-            dto.setTitle("%"+dto.getTitle()+"%");
+        dto.setPage((dto.getPage() - 1) * dto.getSize());
+        if (StringUtils.isNotBlank(dto.getTitle())) {
+            dto.setTitle("%" + dto.getTitle() + "%");
         }
 
         //2.分页查询
@@ -347,34 +359,33 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         return result;
     }
 
-    @Resource
-    WmUserMapper wmUserMapper;
     /**
      * 查询文章详情
+     *
      * @param id
      * @return
      */
     @Override
     public ResponseResult findWmNewsVo(Integer id) {
-        //1参数检查
-        if(id == null){
+        // 1 参数检查
+        if (id == null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
         //2.查询文章信息
         WmNews wmNews = getById(id);
-        if(wmNews == null){
+        if (wmNews == null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
         }
         //3.查询作者
         WmUser wmUser = null;
-        if(wmNews.getUserId() != null){
+        if (wmNews.getUserId() != null) {
             wmUser = wmUserMapper.selectById(wmNews.getUserId());
         }
 
         //4.封装vo信息返回
         WmNewsVO wmNewsVo = new WmNewsVO();
-        BeanUtils.copyProperties(wmNews,wmNewsVo);
-        if(wmUser != null){
+        BeanUtils.copyProperties(wmNews, wmNewsVo);
+        if (wmUser != null) {
             wmNewsVo.setAuthorName(wmUser.getName());
         }
         ResponseResult responseResult = ResponseResult.okResult(wmNewsVo);
@@ -384,6 +395,7 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
 
     /**
      * 自媒体文章人工审核
+     *
      * @param status 2  审核失败  4 审核成功
      * @param dto
      * @return
@@ -391,27 +403,41 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
     @Override
     public ResponseResult updateStatus(Short status, NewsAuthDTO dto) {
         //1.参数检查
-        if(dto == null || dto.getId() == null){
+        if (dto == null || dto.getId() == null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
         //2.查询文章
         WmNews wmNews = getById(dto.getId());
-        if(wmNews == null){
+        if (wmNews == null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
         }
         // 检查文章状态 不能为9  已发布
         if (wmNews.getStatus().equals(WmNews.Status.PUBLISHED.getCode())) {
-            CustException.cust(AppHttpCodeEnum.DATA_NOT_ALLOW,"文章已发布");
+            CustException.cust(AppHttpCodeEnum.DATA_NOT_ALLOW, "文章已发布");
         }
         //3.修改文章状态
         wmNews.setStatus(status);
-        if(StringUtils.isNotBlank(dto.getMsg())){
+        if (StringUtils.isNotBlank(dto.getMsg())) {
             wmNews.setReason(dto.getMsg());
         }
         updateById(wmNews);
 
-        // TODO 通知定时发布文章
-
+        // 通知定时发布文章
+        // 发布时间
+        long publishTime = wmNews.getPublishTime().getTime();
+        // 当前时间
+        long nowTime = new Date().getTime();
+        long remainTime = publishTime - nowTime;
+        // 发布文章
+        rabbitTemplate.convertAndSend(PublishArticleConstants.DELAY_DIRECT_EXCHANGE
+                , PublishArticleConstants.PUBLISH_ARTICLE_ROUTE_KEY
+                , wmNews.getId()
+                , (message) -> {                              // 延时消息 必设置
+                    message.getMessageProperties().setHeader("x-delay", remainTime <= 0 ? 0 : remainTime);
+                    return message;
+                }
+        );
+        log.info("立即发布文章通知成功发送，文章id : {}", wmNews.getId());
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
 }

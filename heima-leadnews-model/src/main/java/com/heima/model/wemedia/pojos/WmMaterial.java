@@ -42,8 +42,8 @@ public class WmMaterial implements Serializable {
 
     /**
      * 素材类型
-            0 图片
-            1 视频
+     * 0 图片
+     * 1 视频
      */
     @TableField("type")
     private Short type;

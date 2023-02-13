@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Linxin
  */
-@Api(value = "自媒体用户登录",tags = "自媒体用户登录")
+@Api(value = "自媒体用户登录", tags = "自媒体用户登录")
 @RestController
 @RequestMapping("/login")
 public class LoginController {

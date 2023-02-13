@@ -13,31 +13,6 @@ import java.util.*;
 public class CustomLibUploader {
 
 
-    public String uploadFile(String host, String uploadFolder, String ossAccessKeyId,
-                             String policy, String signature,
-                             String filepath) throws Exception {
-        LinkedHashMap<String, String> textMap = new LinkedHashMap<String, String>();
-        // key
-        String objectName = uploadFolder + "/imglib_" + UUID.randomUUID().toString() + ".jpg";
-        textMap.put("key", objectName);
-        // Content-Disposition
-        textMap.put("Content-Disposition", "attachment;filename="+filepath);
-        // OSSAccessKeyId
-        textMap.put("OSSAccessKeyId", ossAccessKeyId);
-        // policy
-        textMap.put("policy", policy);
-        // Signature
-        textMap.put("Signature", signature);
-
-        Map<String, String> fileMap = new HashMap<String, String>();
-        fileMap.put("file", filepath);
-
-        String ret = formUpload(host, textMap, fileMap);
-        System.out.println("[" + host + "] post_object:" + objectName);
-        System.out.println("post reponse:" + ret);
-        return objectName;
-    }
-
     private static String formUpload(String urlStr, Map<String, String> textMap, Map<String, String> fileMap) throws Exception {
         String res = "";
         HttpURLConnection conn = null;
@@ -153,6 +128,31 @@ public class CustomLibUploader {
             }
         }
         return res;
+    }
+
+    public String uploadFile(String host, String uploadFolder, String ossAccessKeyId,
+                             String policy, String signature,
+                             String filepath) throws Exception {
+        LinkedHashMap<String, String> textMap = new LinkedHashMap<String, String>();
+        // key
+        String objectName = uploadFolder + "/imglib_" + UUID.randomUUID().toString() + ".jpg";
+        textMap.put("key", objectName);
+        // Content-Disposition
+        textMap.put("Content-Disposition", "attachment;filename=" + filepath);
+        // OSSAccessKeyId
+        textMap.put("OSSAccessKeyId", ossAccessKeyId);
+        // policy
+        textMap.put("policy", policy);
+        // Signature
+        textMap.put("Signature", signature);
+
+        Map<String, String> fileMap = new HashMap<String, String>();
+        fileMap.put("file", filepath);
+
+        String ret = formUpload(host, textMap, fileMap);
+        System.out.println("[" + host + "] post_object:" + objectName);
+        System.out.println("post reponse:" + ret);
+        return objectName;
     }
 
 

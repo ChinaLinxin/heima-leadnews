@@ -46,6 +46,8 @@ public class WmMaterialServiceImpl extends ServiceImpl<WmMaterialMapper, WmMater
 
     @Value("${file.oss.web-site}")
     private String webSite;
+    @Resource
+    private WmNewsMaterialMapper wmNewsMaterialMapper;
 
     @Override
     public ResponseResult uploadPicture(MultipartFile multipartFile) {
@@ -88,9 +90,6 @@ public class WmMaterialServiceImpl extends ServiceImpl<WmMaterialMapper, WmMater
         // 4 返回结果
         return ResponseResult.okResult(wmMaterial);
     }
-
-    @Resource
-    private WmNewsMaterialMapper wmNewsMaterialMapper;
 
     @Override
     public ResponseResult findList(WmMaterialDTO dto) {
@@ -146,18 +145,18 @@ public class WmMaterialServiceImpl extends ServiceImpl<WmMaterialMapper, WmMater
     @Override
     public ResponseResult updateStatus(Integer id, Short type) {
         //1.检查参数
-        if(id == null){
+        if (id == null) {
             CustException.cust(AppHttpCodeEnum.PARAM_INVALID);
         }
         //2.更新状态
         WmMaterial material = getById(id);
         if (material == null) {
-            CustException.cust(AppHttpCodeEnum.DATA_NOT_EXIST,"素材信息不存在");
+            CustException.cust(AppHttpCodeEnum.DATA_NOT_EXIST, "素材信息不存在");
         }
         //获取当前用户信息
         Integer uid = WmThreadLocalUtils.getUser().getId();
-        if(!material.getUserId().equals(uid)){
-            CustException.cust(AppHttpCodeEnum.DATA_NOT_ALLOW,"只允许收藏自己上传的素材");
+        if (!material.getUserId().equals(uid)) {
+            CustException.cust(AppHttpCodeEnum.DATA_NOT_ALLOW, "只允许收藏自己上传的素材");
         }
         material.setIsCollection(type);
         updateById(material);

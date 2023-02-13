@@ -2,7 +2,7 @@ package com.heima.user.controller.v1;
 
 import com.heima.common.constants.admin.AdminConstants;
 import com.heima.model.common.dtos.ResponseResult;
-import com.heima.model.user.pojos.AuthDTO;
+import com.heima.model.user.dtos.AuthDTO;
 import com.heima.user.service.ApUserRealnameService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

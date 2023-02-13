@@ -22,6 +22,10 @@ import java.util.Map;
 
 @Service
 public class AdUserServiceImpl extends ServiceImpl<AdUserMapper, AdUser> implements AdUserService {
+    public static void main(String[] args) {
+        System.out.println(DigestUtils.md5DigestAsHex("123456123456".getBytes()));
+    }
+
     /**
      * admin 登录
      *
@@ -65,9 +69,5 @@ public class AdUserServiceImpl extends ServiceImpl<AdUserMapper, AdUser> impleme
         map.put("token", token);
         map.put("user", userVO);
         return ResponseResult.okResult(map);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(DigestUtils.md5DigestAsHex("123456123456".getBytes()));
     }
 }

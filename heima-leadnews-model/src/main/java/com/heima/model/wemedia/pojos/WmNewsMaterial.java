@@ -41,8 +41,8 @@ public class WmNewsMaterial implements Serializable {
 
     /**
      * 引用类型
-            0 内容引用
-            1 主图引用
+     * 0 内容引用
+     * 1 主图引用
      */
     @TableField("type")
     private Short type;

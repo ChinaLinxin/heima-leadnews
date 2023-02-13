@@ -19,13 +19,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -36,17 +30,19 @@ public class GreenImageScan {
     private String accessKeyId;
     private String secret;
     private String scenes;
+
     /**
      * 解析图片
+     *
      * @param imageList<byte[]>
      * @return
      * @throws Exception
      */
     public Map imageScan(List<byte[]> imageList) throws Exception {
         IClientProfile profile = DefaultProfile
-            .getProfile("cn-shanghai", accessKeyId, secret);
+                .getProfile("cn-shanghai", accessKeyId, secret);
         DefaultProfile
-            .addEndpoint("cn-shanghai", "cn-shanghai", "Green", "green.cn-shanghai.aliyuncs.com");
+                .addEndpoint("cn-shanghai", "cn-shanghai", "Green", "green.cn-shanghai.aliyuncs.com");
         IAcsClient client = new DefaultAcsClient(profile);
         ImageSyncScanRequest imageSyncScanRequest = new ImageSyncScanRequest();
         // 指定api返回格式
@@ -90,7 +86,7 @@ public class GreenImageScan {
         }
         httpBody.put("tasks", urlList);
         imageSyncScanRequest.setHttpContent(org.apache.commons.codec.binary.StringUtils.getBytesUtf8(httpBody.toJSONString()),
-            "UTF-8", FormatType.JSON);
+                "UTF-8", FormatType.JSON);
         /**
          * 请设置超时时间, 服务端全链路处理超时时间为10秒，请做相应设置
          * 如果您设置的ReadTimeout小于服务端处理的时间，程序中会获得一个read timeout异常
@@ -142,7 +138,7 @@ public class GreenImageScan {
                         return null;
                     }
                 }
-                resultMap.put("suggestion","pass");
+                resultMap.put("suggestion", "pass");
                 return resultMap;
             } else {
                 /**
@@ -158,6 +154,7 @@ public class GreenImageScan {
 
     /**
      * 解析图片
+     *
      * @param imageList<String>
      * @return
      * @throws Exception
@@ -261,7 +258,7 @@ public class GreenImageScan {
                         return null;
                     }
                 }
-                resultMap.put("suggestion","pass");
+                resultMap.put("suggestion", "pass");
                 return resultMap;
             } else {
                 /**
